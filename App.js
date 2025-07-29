@@ -1,32 +1,47 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View,Image ,Button,TouchableHighlight, Alert} from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  Image,
+  View,
+ 
+} from "react-native";
+import Constants from 'expo-constants';
+import { getLatestGames } from "./lib/metacritic";
+import { Main } from "./components/Main";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
-const icon =require('./assets/icon.png')
+
 
 export default function App() {
+  const [games, setGames] = useState([]);
+
+  useEffect(() => {
+    getLatestGames().then((games) => {
+      setGames(games);
+    });
+  }, []);
+
+ 
   return (
-    <View style={styles.container}>
+    <SafeAreaProvider>
+      <View style={styles.container}>
       <StatusBar style="light" />
-     
-      <TouchableHighlight
-      underlayColor={"#09F"}
-      onPress={()=> alert('LOL')}
-      style={{width:200,height:200,backgroundColor:'red',borderRadius:200,justifyContent:'center',alignItems:'center'
-      }}
-      >
-
-        <Text style={{color:'white'}}>Pulsa aqui</Text>
-
-      </TouchableHighlight>
+       <Main/>
     </View>
+    </SafeAreaProvider>
+    
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#000",
+    alignItems: "center",
+    justifyContent: "center",
+   paddingHorizontal: 12,
   },
+ 
 });
